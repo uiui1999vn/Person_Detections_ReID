@@ -116,11 +116,7 @@ def main():
         num_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
         fourcc = cv2.VideoWriter_fourcc(*'MPEG')
 
-        ROI_thresshold = 0.08665
-        ROI = [int(ROI_thresshold * width), 0, int(width * (1 - ROI_thresshold)), height]
-        # videoWriter = cv2.VideoWriter('{}_result.mp4'.format(name_video), fourcc, frames_per_second, (ROI[2] - ROI[0], height))
-        videoWriter = cv2.VideoWriter('{}_result.mp4'.format(name_video), fourcc, frames_per_second, (512, 512))
-        #videoWriter = cv2.VideoWriter('video_result.mp4', fourcc, frames_per_second, (width, height))
+        videoWriter = cv2.VideoWriter('{}_result.mp4'.format(name_video), fourcc, frames_per_second, (width, height))
         total_time = 0
         colours = np.random.randint(0, 256, size=(32, 3))
         for frame_index in range(num_frames):
@@ -128,11 +124,6 @@ def main():
             start_time = time.time()
             ret, img = video.read()
             img = cv2.resize(img,(512,512))
-            # x_min = ROI[0]
-            # y_min = ROI[1]
-            # x_max = ROI[2]
-            # y_max = ROI[3]
-            # img = img[y_min:y_max, x_min:x_max, :]
             dets,basket = detector.detect(img)
             if sort:
                 trackers,local_ID_enter,local_ID_exit,local_ID_completed = mot_tracker.update(dets)
